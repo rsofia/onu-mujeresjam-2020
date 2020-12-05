@@ -7,7 +7,8 @@ public class Character : MonoBehaviour
 {
     private bool isCommunity = false;
     [SerializeField] private GameObject darkness;
-    [SerializeField] private Transform handToHold;
+    [SerializeField] private Transform leftHand;
+    [SerializeField] private Transform rightHand;
 
     private Animator animator;
     private CharacterIKControl ikControl;
@@ -30,20 +31,34 @@ public class Character : MonoBehaviour
     {
         isCommunity = true;
         darkness.SetActive(false);
+        GameManager.instance.AddToCommunity(this);
     }
 
-    public void HoldHands(Transform target)
+    public void HoldWithRightHand(Transform left)
     {
-        ikControl.ActivateIK(target);
+        ikControl.ActivateIKRight(left);
+    }
+    
+    public void HoldWithLeftHand(Transform right)
+    {
+        ikControl.ActivateIKLeft(right);
     }
 
-    public Transform GetHandToHold()
+    public Transform GetLeftHand()
     {
-        return handToHold;
+        return leftHand;
+    }
+
+    public Transform GetRightHand()
+    {
+        return rightHand;
     }
     
     public void Select()
     {
+        if(isCommunity)
+            return;
+        
         JoinCommunity();
     }
 }

@@ -1,21 +1,32 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameManager instance;
+    public static GameManager instance;
     
     private List<Character> charactersInCommmunity = new List<Character>();
 
-    public void Add(Character charactedtoAdd)
+    private void Awake()
+    {
+        if(instance != null)
+            Destroy(this);
+        instance = this;
+
+    }
+
+    public void AddToCommunity(Character characterToAdd)
     {
         int communityCount = charactersInCommmunity.Count;
         if (communityCount >= 1)
         {
-            charactedtoAdd.HoldHands(charactersInCommmunity[communityCount-1].GetHandToHold());
+            characterToAdd.HoldWithRightHand(charactersInCommmunity[communityCount-1].GetLeftHand());
+            charactersInCommmunity[communityCount-1].HoldWithLeftHand(characterToAdd.GetRightHand());
         }
-        charactersInCommmunity.Add(charactedtoAdd);
+        charactersInCommmunity.Add(characterToAdd);
     }
     
 }
