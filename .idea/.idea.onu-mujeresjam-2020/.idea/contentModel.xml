@@ -12,6 +12,7 @@
             <e p="GameConstants.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
+            <e p="MainCharacter.cs" t="Include" />
             <e p="PanAndZoom.cs" t="Include" />
           </e>
         </e>
