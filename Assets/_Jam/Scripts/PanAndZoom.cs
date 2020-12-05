@@ -11,6 +11,7 @@ public class PanAndZoom : MonoBehaviour
     [SerializeField] private float zoomInMax = 40f;
     [SerializeField] private float zoomOutMax = 90f;
     [SerializeField] Vector2 panlimit;
+    [SerializeField] [Range(0, 1)] private float screenPercentage = 0.05f;
     
     private CinemachineInputProvider inputProvider;
     private CinemachineVirtualCamera virtualCamera;
@@ -39,21 +40,21 @@ public class PanAndZoom : MonoBehaviour
     public Vector2 PanDirection(float x, float y)
     {
       Vector2 direction = Vector2.zero;
-      if (y >= Screen.height * .95f) //top 5% of the screen
+      if (y >= Screen.height * (1 - screenPercentage)) //top 5% of the screen
       {
           direction.y += 1;
       }
-      else if (y <= Screen.height * 0.005)
+      else if (y <= Screen.height * screenPercentage)
       {
           direction.y -= 1;
       }
 
       //width
-      if (x >= Screen.width * 0.95f)
+      if (x >= Screen.width * (1 - screenPercentage))
       {
           direction.x += 1;
       }
-      else if (x <= Screen.width * 0.005)
+      else if (x <= Screen.width * screenPercentage)
       {
           direction.x -= 1;
       }
