@@ -25,6 +25,7 @@ public class Character : MonoBehaviour
     public Transform spotToHoldHands;
     private NavMeshAgent agent;
     private bool useNavMesh;
+    private bool movingWithPanic;
     
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class Character : MonoBehaviour
         darkness.SetActive(true);
         ikControl.DeactivateIK();
         agent.enabled = false;
+        movingWithPanic = false;
     }
 
     private void JoinCommunity()
@@ -67,12 +69,30 @@ public class Character : MonoBehaviour
 
     public void Panicked()
     {
-        isCommunity = false;
+        //halt what its doing
         ikControl.DeactivateIK();
         StopMoving();
-        animator.SetTrigger("scared");
-        //TODO FINISH PACKICKED
-        
+
+        //Panic animation
+        animator.SetBool("panic", true);
+
+        //Move to random position
+        Vector3 goal;
+        RandomPointNavmesh.RandomPoint(transform.position, 10f, out goal);
+        canMove = true;
+        targetWorld = goal;
+        agent.enabled = true;
+        useNavMesh = true;
+        movingWithPanic = true;
+        slerpLookAt.LookAt(transform, goal);
+    }
+
+    //reset variables from panic
+    private void UnPanic()
+    {
+        isCommunity = false;
+        movingWithPanic = false;
+        animator.SetBool("panic", false);
     }
 
     public bool IsOnCommunity()
@@ -160,6 +180,10 @@ public class Character : MonoBehaviour
                 {
                     agent.isStopped = true;
                     StopMoving();
+                    if (movingWithPanic)
+                    {
+                        UnPanic();
+                    }
                     return;
                 }
                 
@@ -167,6 +191,10 @@ public class Character : MonoBehaviour
                 {
                     agent.isStopped = true;
                     StopMoving();
+                    if (movingWithPanic)
+                    {
+                        UnPanic();
+                    }
                 }
                 
                // if (!agent.pathPending)
@@ -195,6 +223,10 @@ public class Character : MonoBehaviour
                 if (Vector3.Distance(transform.position, goalPosition) < stoppingDistance)
                 {
                     StopMoving();
+                    if (movingWithPanic)
+                    {
+                        UnPanic();
+                    }
                 }
             }
            

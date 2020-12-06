@@ -23,6 +23,7 @@
             <e p="Obstacle.cs" t="Include" />
             <e p="PanAndZoom.cs" t="Include" />
             <e p="PostProcessController.cs" t="Include" />
+            <e p="RandomPointNavmesh.cs" t="Include" />
             <e p="SlerpLookAt.cs" t="Include" />
             <e p="StatisticsController.cs" t="Include" />
             <e p="TextMeshTyper.cs" t="Include" />
