@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField] private int communitySizeGoal = 10;
     
-    private List<Character> charactersInCommmunity = new List<Character>();
+    public List<Character> charactersInCommmunity = new List<Character>();
 
     [HideInInspector]
     public bool isGameOver = false;
@@ -90,24 +90,25 @@ public class GameManager : MonoBehaviour
     {
         if(!fromCharacter.IsOnCommunity())
             return;
-        Debug.Log("<b>Gonna remove from community</b>");
         int index = -1;
         for (int i = 0; i < charactersInCommmunity.Count; i++)
         {
             if (fromCharacter == charactersInCommmunity[i])
             {
+                //get index to remove
                 index = i;
-                //Remove from here
-                charactersInCommmunity[i].Panicked();
-                Debug.Log("<b>PANIC</b>" +  i);
-                //todo REMOVE CHARACTERS
                 break; //exit loop
             }
         }
 
         if (index >= 0)
         {
-            charactersInCommmunity.RemoveRange(0, index);
+            for (int c = 0; c <= index; c++)
+            {
+                
+                charactersInCommmunity[c].Panicked();
+            }
+            charactersInCommmunity.RemoveRange(0, index+1);
         }
     }
     

@@ -12,6 +12,7 @@
             </e>
           </e>
           <e p="Scripts" t="Include">
+            <e p="BlurRenderer.cs" t="Include" />
             <e p="Character.cs" t="Include" />
             <e p="CharacterIKControl.cs" t="Include" />
             <e p="CharacterRandomizer.cs" t="Include" />
@@ -21,9 +22,15 @@
             <e p="LevelGenerator.cs" t="Include" />
             <e p="Obstacle.cs" t="Include" />
             <e p="PanAndZoom.cs" t="Include" />
+            <e p="PostProcessController.cs" t="Include" />
             <e p="SlerpLookAt.cs" t="Include" />
+            <e p="StatisticsController.cs" t="Include" />
             <e p="TextMeshTyper.cs" t="Include" />
+            <e p="UIController.cs" t="Include" />
             <e p="UIManager.cs" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="BlurryUI.shader" t="Include" />
           </e>
         </e>
         <e p="Akishaqs" t="Include">

@@ -69,6 +69,8 @@ public class Character : MonoBehaviour
     {
         isCommunity = false;
         ikControl.DeactivateIK();
+        StopMoving();
+        animator.SetTrigger("scared");
         //TODO FINISH PACKICKED
         
     }
