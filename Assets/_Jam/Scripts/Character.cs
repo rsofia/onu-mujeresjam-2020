@@ -39,13 +39,13 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.isGameOver)
-        {
-            if(canMove)
-                StopMoving();
-            
-            return;
-        }
+        // if (GameManager.instance.isGameOver)
+        // {
+        //     if(canMove)
+        //         StopMoving();
+        //     
+        //     return;
+        // }
         
         Move();
     }
@@ -56,7 +56,6 @@ public class Character : MonoBehaviour
         darkness.SetActive(true);
         ikControl.DeactivateIK();
         agent.enabled = false;
-        GetComponent<BoxCollider>().enabled = true;
     }
 
     private void JoinCommunity()
@@ -72,6 +71,11 @@ public class Character : MonoBehaviour
         ikControl.DeactivateIK();
         //TODO FINISH PACKICKED
         
+    }
+
+    public bool IsOnCommunity()
+    {
+        return isCommunity;
     }
 
     #region hold hands
@@ -144,17 +148,39 @@ public class Character : MonoBehaviour
             
             if (useNavMesh)
             {
-                agent.SetDestination(goalPosition);
-                if (!agent.pathPending)
+                if (goalPosition != agent.destination)
                 {
-                    if (agent.remainingDistance <= agent.stoppingDistance)
-                    {
-                        if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f)
-                        {
-                            StopMoving();
-                        }
-                    }
+                    agent.SetDestination(goalPosition);
+                    hasPath = false;
                 }
+                
+                if (AtEndOfPath())
+                {
+                    agent.isStopped = true;
+                    StopMoving();
+                    return;
+                }
+                
+                if (Vector3.Distance(transform.position, agent.destination) < stoppingDistance)
+                {
+                    agent.isStopped = true;
+                    StopMoving();
+                }
+                
+               // if (!agent.pathPending)
+               // {
+                    // Debug.Log(gameObject.name + " still has path pending");
+                    // if (agent.remainingDistance <= agent.stoppingDistance)
+                    // {
+                    //     Debug.Log(gameObject.name + " remaining distance accomplished" + agent.remainingDistance + " stopping " + agent.stoppingDistance);
+                    //     if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f)
+                    //     {
+                    //         agent.isStopped = true;
+                    //         Debug.Log(gameObject.name + " stop");
+                    //         StopMoving();
+                    //     }
+                    // }
+                //}
             }
             else
             {
@@ -171,6 +197,21 @@ public class Character : MonoBehaviour
             }
            
         }
+    }
+    
+    public float pathEndThreshold = 0.1f;
+    private bool hasPath = false;
+    bool AtEndOfPath()
+    {
+        hasPath |= agent.hasPath;
+        if (hasPath && agent.remainingDistance <= agent.stoppingDistance + pathEndThreshold )
+        {
+            // Arrived
+            hasPath = false;
+            return true;
+        }
+ 
+        return false;
     }
     
     public void StopMoving()
@@ -193,7 +234,7 @@ public class Character : MonoBehaviour
     {
         if(isCommunity)
             return;
-        GetComponent<BoxCollider>().enabled = false;
+        //GetComponent<BoxCollider>().enabled = false;
         JoinCommunity();
     }
 }

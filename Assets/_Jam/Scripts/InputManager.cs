@@ -28,9 +28,11 @@ public class InputManager : MonoBehaviour
             if (hit.collider.CompareTag(GameConstants.characterTag))
             {
                 hit.collider.GetComponent<Character>().Select();
+                GameManager.instance.SetAndActivateParticle(hit.collider.transform.position);
             }
             else if (hit.collider.CompareTag(GameConstants.floorTag))
             {
+                GameManager.instance.SetAndActivateParticle(hit.point);
                 StartCoroutine(GameManager.instance.GoToPoint(hit.point));
             }
         }
