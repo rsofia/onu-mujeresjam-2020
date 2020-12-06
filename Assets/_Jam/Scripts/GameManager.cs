@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-	//public GameObject decalPrefab;
+    [SerializeField] private int communitySizeGoal = 10;
     
     private List<Character> charactersInCommmunity = new List<Character>();
 
+    public bool isGameOver = false;
+    
     private void Awake()
     {
         if(instance != null)
@@ -19,11 +22,17 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void WinCondition()
+    {
+        if (charactersInCommmunity.Count >= communitySizeGoal)
+        {
+            Debug.Log("Game Won");
+            isGameOver = true;
+        }
+    }
+
     public IEnumerator AddToCommunity(Character characterToAdd)
     {
-        //Place shadow so at the end it reads something
-	    // Instantiate(decalPrefab, characterToAdd.transform.position + (Vector3.up * 1.8f), Quaternion.Euler(90, 0,0 ));
-        
         //Add the character
         int communityCount = charactersInCommmunity.Count;
         if (communityCount >= 1)
@@ -42,9 +51,23 @@ public class GameManager : MonoBehaviour
             charactersInCommmunity[communityCount-1].HoldWithLeftHand(characterToAdd.GetRightHand());
         }
         charactersInCommmunity.Add(characterToAdd);
-        
-       
-      
+        WinCondition();
+
+    }
+
+    public void RemoveCommunity(Character fromCharacter)
+    {
+        for (int i = 0; i < charactersInCommmunity.Count; i++)
+        {
+            if (fromCharacter == charactersInCommmunity[i])
+            {
+                //Remove from here
+                charactersInCommmunity[i].Panicked();
+                charactersInCommmunity.RemoveAt(i);
+                //todo REMOVE CHARACTERS
+                break; //exit loop
+            }
+        }
     }
     
 }

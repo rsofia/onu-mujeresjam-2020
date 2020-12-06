@@ -34,6 +34,80 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.isGameOver)
+        {
+            if(canMove)
+                StopMoving();
+            
+            return;
+        }
+        
+        Move();
+    }
+
+    private void Inactive()
+    {
+        isCommunity = false;
+        darkness.SetActive(true);
+        ikControl.DeactivateIK();
+        agent.enabled = false;
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private void JoinCommunity()
+    {
+        isCommunity = true;
+        darkness.SetActive(false);
+        StartCoroutine(GameManager.instance.AddToCommunity(this));
+    }
+
+    public void Panicked()
+    {
+        isCommunity = false;
+        ikControl.DeactivateIK();
+        //TODO FINISH PACKICKED
+        
+    }
+
+    #region hold hands
+    public void HoldWithRightHand(Transform left)
+    {
+        ikControl.ActivateIKRight(left);
+    }
+    
+    public void HoldWithLeftHand(Transform right)
+    {
+        ikControl.ActivateIKLeft(right);
+    }
+
+    public Transform GetLeftHand()
+    {
+        return leftHand;
+    }
+
+    public Transform GetRightHand()
+    {
+        return rightHand;
+    }
+#endregion
+
+    #region Movement
+    public void WalkTo(Character other, bool useNavmesh)
+    {
+        //todo walk to
+        canMove = true;
+        if (useNavmesh)
+        {
+            agent.enabled = true;
+            agent.stoppingDistance = stoppingDistance;
+        }
+        target = other.spotToHoldHands;
+        animator.SetFloat("speed", 1.0f);
+        transform.LookAt(other.transform);
+    }
+
+    private void Move()
+    {
         if (canMove && target)
         {
             if (useNavMesh)
@@ -65,57 +139,7 @@ public class Character : MonoBehaviour
            
         }
     }
-
-    private void Inactive()
-    {
-        isCommunity = false;
-        darkness.SetActive(true);
-        ikControl.DeactivateIK();
-        agent.enabled = false;
-        GetComponent<BoxCollider>().enabled = true;
-    }
-
-    private void JoinCommunity()
-    {
-        isCommunity = true;
-        darkness.SetActive(false);
-        StartCoroutine(GameManager.instance.AddToCommunity(this));
-    }
-
-    public void HoldWithRightHand(Transform left)
-    {
-        ikControl.ActivateIKRight(left);
-    }
     
-    public void HoldWithLeftHand(Transform right)
-    {
-        ikControl.ActivateIKLeft(right);
-    }
-
-    public Transform GetLeftHand()
-    {
-        return leftHand;
-    }
-
-    public Transform GetRightHand()
-    {
-        return rightHand;
-    }
-
-    public void WalkTo(Character other, bool useNavmesh)
-    {
-        //todo walk to
-        canMove = true;
-        if (useNavmesh)
-        {
-            agent.enabled = true;
-            agent.stoppingDistance = stoppingDistance;
-        }
-        target = other.spotToHoldHands;
-        animator.SetFloat("speed", 1.0f);
-        transform.LookAt(other.transform);
-    }
-
     public void StopMoving()
     {
         canMove = false;
@@ -126,6 +150,10 @@ public class Character : MonoBehaviour
         agent.enabled = false;
     }
     
+
+
+#endregion
+   
     public void Select()
     {
         if(isCommunity)
