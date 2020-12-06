@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &825404711
 Transform:
   m_ObjectHideFlags: 0
@@ -4573,7 +4573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1049729717
 Transform:
   m_ObjectHideFlags: 0
@@ -9129,7 +9129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1889919475
 Transform:
   m_ObjectHideFlags: 0
@@ -13685,7 +13685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &410168436344393469
 Transform:
   m_ObjectHideFlags: 0
@@ -18290,6 +18290,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character Variant Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332975840082680667, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6348163932928599468, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e957e75ba694c4277b431261f1b08042, type: 3}

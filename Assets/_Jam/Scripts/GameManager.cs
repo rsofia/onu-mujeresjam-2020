@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public GameObject decalPrefab;
+	//public GameObject decalPrefab;
     
     private List<Character> charactersInCommmunity = new List<Character>();
 
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator AddToCommunity(Character characterToAdd)
     {
         //Place shadow so at the end it reads something
-        Instantiate(decalPrefab, characterToAdd.transform.position + (Vector3.up * 1.8f), Quaternion.Euler(90, 0,0 ));
+	    // Instantiate(decalPrefab, characterToAdd.transform.position + (Vector3.up * 1.8f), Quaternion.Euler(90, 0,0 ));
         
         //Add the character
         int communityCount = charactersInCommmunity.Count;

@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StormCloudEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 1000014264868206, guid: ca55dd9d7d291014a8b13aaf95318a3a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010711724342, guid: ca55dd9d7d291014a8b13aaf95318a3a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -90,6 +94,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1070951352199587663, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1718590650183387096, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201799856105764051, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2633940386607817089, guid: e957e75ba694c4277b431261f1b08042,
         type: 3}
       propertyPath: m_RootOrder
@@ -149,6 +168,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character Variant Rain
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646597426585461630, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332975840082680667, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5984568303396989251, guid: e957e75ba694c4277b431261f1b08042,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e957e75ba694c4277b431261f1b08042, type: 3}
