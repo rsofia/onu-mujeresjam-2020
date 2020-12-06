@@ -29,15 +29,14 @@ public class GameManager : MonoBehaviour
         if (communityCount >= 1)
         {
             //Last character walks up to the new one
-            charactersInCommmunity[communityCount-1].WalkTo(characterToAdd);
+            charactersInCommmunity[communityCount-1].WalkTo(characterToAdd, true);
             
             for (int i = communityCount-2; i >= 0 ; i--)
             {
                 yield return  new WaitForSeconds(0.2f);
-                charactersInCommmunity[i].WalkTo(charactersInCommmunity[i+1]);
+                charactersInCommmunity[i].WalkTo(charactersInCommmunity[i+1], false);
             }
             
-            //TODO MOVE THIS TO WALK TO IN A COUROUTINE
             //Make them hold hands with each other
             characterToAdd.HoldWithRightHand(charactersInCommmunity[communityCount-1].GetLeftHand());
             charactersInCommmunity[communityCount-1].HoldWithLeftHand(characterToAdd.GetRightHand());

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Character : MonoBehaviour
 {
@@ -20,11 +21,14 @@ public class Character : MonoBehaviour
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private float stoppingDistance = 0.5f;
     public Transform spotToHoldHands;
+    private NavMeshAgent agent;
+    private bool useNavMesh;
     
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         ikControl = GetComponentInChildren<CharacterIKControl>();
+        agent = GetComponent<NavMeshAgent>();
         Inactive();
     }
 
@@ -32,13 +36,33 @@ public class Character : MonoBehaviour
     {
         if (canMove && target)
         {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-
-            if (Vector3.Distance(transform.position, target.position) < stoppingDistance)
+            if (useNavMesh)
             {
-                StopMoving();
+                agent.SetDestination(target.position);
+                if (!agent.pathPending)
+                {
+                    if (agent.remainingDistance <= agent.stoppingDistance)
+                    {
+                        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                        {
+                            // Done
+                            StopMoving();
+                        }
+                    }
+                }
             }
+            else
+            {
+                float step = speed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+                
+                transform.LookAt(target);
+                if (Vector3.Distance(transform.position, target.position) < stoppingDistance)
+                {
+                    StopMoving();
+                }
+            }
+           
         }
     }
 
@@ -47,6 +71,7 @@ public class Character : MonoBehaviour
         isCommunity = false;
         darkness.SetActive(true);
         ikControl.DeactivateIK();
+        agent.enabled = false;
     }
 
     private void JoinCommunity()
@@ -76,13 +101,18 @@ public class Character : MonoBehaviour
         return rightHand;
     }
 
-    public void WalkTo(Character other)
+    public void WalkTo(Character other, bool useNavmesh)
     {
         //todo walk to
         canMove = true;
+        if (useNavmesh)
+        {
+            agent.enabled = true;
+            agent.stoppingDistance = stoppingDistance;
+        }
         target = other.spotToHoldHands;
         animator.SetFloat("speed", 1.0f);
-        transform.LookAt(target);
+        transform.LookAt(other.transform);
     }
 
     public void StopMoving()
@@ -91,13 +121,15 @@ public class Character : MonoBehaviour
         target = null;
         animator.SetFloat("speed", 0.0f);
         transform.localEulerAngles = new Vector3(0, 180f, 0);
+        
+        agent.enabled = false;
     }
     
     public void Select()
     {
         if(isCommunity)
             return;
-        
+        GetComponent<BoxCollider>().enabled = false;
         JoinCommunity();
     }
 }
