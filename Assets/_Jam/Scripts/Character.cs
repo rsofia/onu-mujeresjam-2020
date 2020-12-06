@@ -72,6 +72,7 @@ public class Character : MonoBehaviour
         darkness.SetActive(true);
         ikControl.DeactivateIK();
         agent.enabled = false;
+        GetComponent<BoxCollider>().enabled = true;
     }
 
     private void JoinCommunity()
