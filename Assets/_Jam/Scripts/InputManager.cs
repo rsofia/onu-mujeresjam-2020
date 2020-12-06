@@ -16,11 +16,16 @@ public class InputManager : MonoBehaviour
             return;
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         
-        if (Physics.Raycast(ray, out hit, 1000))//, GameConstants.characterMask))
+        if (Physics.Raycast(ray, out hit, 1000))
         {
             if (hit.collider.CompareTag(GameConstants.characterTag))
             {
                 hit.collider.GetComponent<Character>().Select();
+            }
+            else if (hit.collider.CompareTag(GameConstants.floorTag))
+            {
+                StartCoroutine(GameManager.instance.GoToPoint(hit.point));
+                Debug.Log("look at " + hit.point);
             }
         }
     }

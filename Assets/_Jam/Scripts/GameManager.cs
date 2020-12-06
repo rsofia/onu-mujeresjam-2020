@@ -31,6 +31,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public IEnumerator GoToPoint(Vector3 worldPoint)
+    {
+        int communityCount = charactersInCommmunity.Count;
+
+        if (communityCount > 0)
+        {
+            charactersInCommmunity[communityCount-1].WalkToPoint(worldPoint, true);
+            for (int i = communityCount-2; i >= 0 ; i--)
+            {
+                charactersInCommmunity[i].WalkTo(charactersInCommmunity[i+1], false);
+                yield return  new WaitForSeconds(0.1f);
+            }
+        }
+        
+        
+    }
+
     public IEnumerator AddToCommunity(Character characterToAdd)
     {
         //Add the character

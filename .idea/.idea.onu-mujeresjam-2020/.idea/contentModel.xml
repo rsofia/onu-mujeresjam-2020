@@ -21,6 +21,7 @@
             <e p="LevelGenerator.cs" t="Include" />
             <e p="MainCharacter.cs" t="Include" />
             <e p="PanAndZoom.cs" t="Include" />
+            <e p="SlerpLookAt.cs" t="Include" />
             <e p="TextMeshTyper.cs" t="Include" />
           </e>
         </e>

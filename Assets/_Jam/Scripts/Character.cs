@@ -13,11 +13,13 @@ public class Character : MonoBehaviour
 
     private Animator animator;
     private CharacterIKControl ikControl;
+    private SlerpLookAt slerpLookAt;
 
     //Movement
     [Header("Movement")]
     private bool canMove = false;
     private Transform target;
+    protected Vector3 targetWorld;
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private float stoppingDistance = 0.5f;
     public Transform spotToHoldHands;
@@ -29,6 +31,9 @@ public class Character : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         ikControl = GetComponentInChildren<CharacterIKControl>();
         agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = stoppingDistance;
+        agent.speed = speed;
+        slerpLookAt = GetComponent<SlerpLookAt>();
         Inactive();
     }
 
@@ -92,34 +97,60 @@ public class Character : MonoBehaviour
 #endregion
 
     #region Movement
-    public void WalkTo(Character other, bool useNavmesh)
+    public void WalkTo(Character other, bool _useNavMesh)
     {
-        //todo walk to
+        if(canMove)
+            return;
+        
+        
         canMove = true;
-        if (useNavmesh)
+        if (_useNavMesh)
         {
             agent.enabled = true;
-            agent.stoppingDistance = stoppingDistance;
+            this.useNavMesh = _useNavMesh;
         }
         target = other.spotToHoldHands;
         animator.SetFloat("speed", 1.0f);
         transform.LookAt(other.transform);
+       //slerpLookAt.LookAt(this.transform, other.transform);
+    }
+
+    public void WalkToPoint(Vector3 point, bool _useNavMesh)
+    {
+        if(canMove)
+            return;
+        
+        canMove = true;
+        targetWorld = point;
+        if (_useNavMesh)
+        {
+            agent.enabled = true;
+            useNavMesh = _useNavMesh;
+        }
+        animator.SetFloat("speed", 1.0f);
+        slerpLookAt.LookAt(transform, point);
+        
     }
 
     private void Move()
     {
-        if (canMove && target)
+        if (canMove)
         {
+            Vector3 goalPosition;
+            if (target == null)
+                goalPosition = targetWorld;
+            else
+                goalPosition = target.position;
+            
             if (useNavMesh)
             {
-                agent.SetDestination(target.position);
+                agent.SetDestination(goalPosition);
                 if (!agent.pathPending)
                 {
                     if (agent.remainingDistance <= agent.stoppingDistance)
                     {
-                        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                        if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f)
                         {
-                            // Done
                             StopMoving();
                         }
                     }
@@ -128,10 +159,12 @@ public class Character : MonoBehaviour
             else
             {
                 float step = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+                transform.position = Vector3.MoveTowards(transform.position, goalPosition, step);
                 
-                transform.LookAt(target);
-                if (Vector3.Distance(transform.position, target.position) < stoppingDistance)
+                if(target != null)
+                    slerpLookAt.LookAt(this.transform, target);
+                
+                if (Vector3.Distance(transform.position, goalPosition) < stoppingDistance)
                 {
                     StopMoving();
                 }
@@ -145,9 +178,11 @@ public class Character : MonoBehaviour
         canMove = false;
         target = null;
         animator.SetFloat("speed", 0.0f);
+        slerpLookAt.StopLookintAt();
         transform.localEulerAngles = new Vector3(0, 180f, 0);
-        
         agent.enabled = false;
+        useNavMesh = false;
+        animator.transform.localEulerAngles = Vector3.zero;
     }
     
 
