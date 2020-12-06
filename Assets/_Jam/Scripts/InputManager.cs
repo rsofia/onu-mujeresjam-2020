@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -7,11 +8,18 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     private RaycastHit hit;
-    public InputActionReference mouseInputReference;
-    
-    
+    public InputAction inputAction;
+
+    private void Update()
+    {
+        //  if(playerInput.actions["Fire"].WasPressedThisFrame())
+      if(Mouse.current.leftButton.wasPressedThisFrame)
+            OnLeftClick();
+    }
+
     public void OnLeftClick()
     {
+        Debug.Log("Left click");
         if(GameManager.instance.isGameOver)
             return;
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -25,7 +33,6 @@ public class InputManager : MonoBehaviour
             else if (hit.collider.CompareTag(GameConstants.floorTag))
             {
                 StartCoroutine(GameManager.instance.GoToPoint(hit.point));
-                Debug.Log("look at " + hit.point);
             }
         }
     }

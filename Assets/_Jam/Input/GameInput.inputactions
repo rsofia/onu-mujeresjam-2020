@@ -27,7 +27,7 @@
                     "id": "39655712-8597-4ba8-9dd4-22327bf366ff",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": ""
                 }
             ],
             "bindings": [

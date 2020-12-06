@@ -111,8 +111,8 @@ public class Character : MonoBehaviour
         }
         target = other.spotToHoldHands;
         animator.SetFloat("speed", 1.0f);
-        transform.LookAt(other.transform);
-       //slerpLookAt.LookAt(this.transform, other.transform);
+        
+       slerpLookAt.LookAt(this.transform, other.transform);
     }
 
     public void WalkToPoint(Vector3 point, bool _useNavMesh)

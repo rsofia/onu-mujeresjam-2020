@@ -62,22 +62,9 @@ public class SlerpLookAt : MonoBehaviour
             Quaternion.LookRotation(newDirection).ToAngleAxis(out angle, out axis);
             objToRotate.rotation = Quaternion.AngleAxis(angle, Vector3.up);
 
-
-            //todo stop slerp at some point
-
         }
         else if (isOnSlerpTransform)
         {
-           //  direction = (targetTransform.position - objToRotate.position).normalized;
-           //  lookAtRotation = Quaternion.LookRotation(direction);
-           //  
-           // // objToRotate.rotation = Quaternion.Slerp(objToRotate.rotation, lookAtRotation, Time.deltaTime * rotationSpeed);
-           //
-           // float angle;
-           // Vector3 axis = Vector3.up;
-           // Quaternion.LookRotation(lookAtRotation).ToAngleAxis(out angle, out axis);
-           // objToRotate.rotation = Quaternion.AngleAxis(angle, Vector3.up);
-           
            // Determine which direction to rotate towards
            direction = targetTransform.position - objToRotate.position;
 
@@ -87,14 +74,12 @@ public class SlerpLookAt : MonoBehaviour
            // Rotate the forward vector towards the target direction by one step
            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, singleStep, 0.0f);
 
-           //Debug.DrawRay(transform.position, newDirection, Color.red);
 
            float angle;
            Vector3 axis = Vector3.up;
            Quaternion.LookRotation(newDirection).ToAngleAxis(out angle, out axis);
            objToRotate.rotation = Quaternion.AngleAxis(angle, Vector3.up);
             
-            //todo stop slerp at some point
         }
     }
 }
