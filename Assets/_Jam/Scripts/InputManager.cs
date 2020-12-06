@@ -12,7 +12,6 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        //  if(playerInput.actions["Fire"].WasPressedThisFrame())
       if(Mouse.current.leftButton.wasPressedThisFrame)
             OnLeftClick();
     }

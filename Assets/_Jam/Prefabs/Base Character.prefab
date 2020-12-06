@@ -84,7 +84,7 @@ MonoBehaviour:
   leftHand: {fileID: 1961834067140346402}
   rightHand: {fileID: 2353691710211136546}
   speed: 1.5
-  stoppingDistance: 0.1
+  stoppingDistance: 0.01
   spotToHoldHands: {fileID: 6919694140138750134}
 --- !u!54 &2633940386607817102
 Rigidbody:

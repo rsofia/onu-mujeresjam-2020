@@ -12,22 +12,28 @@ public class GameManager : MonoBehaviour
     
     private List<Character> charactersInCommmunity = new List<Character>();
 
+    [HideInInspector]
     public bool isGameOver = false;
-    
+
+    public UIManager ui;
     private void Awake()
     {
         if(instance != null)
             Destroy(this);
         instance = this;
+        
+        ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
 
     }
 
     private void WinCondition()
     {
+        ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
         if (charactersInCommmunity.Count >= communitySizeGoal)
         {
             Debug.Log("Game Won");
             isGameOver = true;
+            ui.ShowGameOver(true);
         }
     }
 
