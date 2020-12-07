@@ -21,12 +21,17 @@ public class Obstacle : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
+    { 
+        if(GameManager.instance.isGameOver)
+            return;
         Move();
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        if(GameManager.instance.isGameOver)
+            return;
+        
         Debug.Log("collided with " + other.gameObject.name);
         if (other.collider.tag == GameConstants.characterTag)
         {
