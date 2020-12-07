@@ -8,6 +8,7 @@ public class Character : MonoBehaviour
 {
     private bool isCommunity = false;
     [SerializeField] private ParticleSystem heartParticle;
+    [SerializeField] private ParticleSystem[] confusedParticles;
     [SerializeField] private Transform leftHand;
     [SerializeField] private Transform rightHand;
 
@@ -59,6 +60,10 @@ public class Character : MonoBehaviour
         movingWithPanic = false;
         if(!heartParticle.isStopped)
             heartParticle.Stop();
+        foreach (var particle in confusedParticles)
+        {
+            particle.Stop();
+        }
     }
 
     private void JoinCommunity()
@@ -74,6 +79,12 @@ public class Character : MonoBehaviour
         ikControl.DeactivateIK();
         StopMoving();
 
+        //play particle
+        foreach (var particle in confusedParticles)
+        {
+            particle.Play();
+        }
+        
         //Panic animation
         animator.SetBool("panic", true);
 
@@ -94,6 +105,10 @@ public class Character : MonoBehaviour
         isCommunity = false;
         movingWithPanic = false;
         animator.SetBool("panic", false);
+        foreach (var particle in confusedParticles)
+        {
+            particle.Stop();
+        }
     }
 
     public bool IsOnCommunity()
