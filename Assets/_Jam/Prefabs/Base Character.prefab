@@ -41,9 +41,9 @@ GameObject:
   - component: {fileID: 2633940386607817089}
   - component: {fileID: 2633940386607817088}
   - component: {fileID: 2633940386607817102}
-  - component: {fileID: 2633940386607817103}
   - component: {fileID: 4992108650840433206}
   - component: {fileID: 6498648726691622961}
+  - component: {fileID: 4455395680662915929}
   m_Layer: 8
   m_Name: Base Character
   m_TagString: Character
@@ -86,6 +86,7 @@ MonoBehaviour:
   speed: 1.5
   stoppingDistance: 0.01
   spotToHoldHands: {fileID: 6919694140138750134}
+  pathEndThreshold: 0.1
 --- !u!54 &2633940386607817102
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -100,21 +101,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
---- !u!65 &2633940386607817103
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2633940386607817100}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.9291351, z: 1}
-  m_Center: {x: 0, y: 0.9982008, z: 0}
 --- !u!195 &4992108650840433206
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -149,6 +137,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71176fab703b24b7396915953a6a3f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &4455395680662915929
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633940386607817100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.98, z: 0}
 --- !u!1 &2633940386898059614
 GameObject:
   m_ObjectHideFlags: 0
