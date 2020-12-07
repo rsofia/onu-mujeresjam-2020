@@ -196,21 +196,6 @@ public class Character : MonoBehaviour
                         UnPanic();
                     }
                 }
-                
-               // if (!agent.pathPending)
-               // {
-                    // Debug.Log(gameObject.name + " still has path pending");
-                    // if (agent.remainingDistance <= agent.stoppingDistance)
-                    // {
-                    //     Debug.Log(gameObject.name + " remaining distance accomplished" + agent.remainingDistance + " stopping " + agent.stoppingDistance);
-                    //     if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.2f)
-                    //     {
-                    //         agent.isStopped = true;
-                    //         Debug.Log(gameObject.name + " stop");
-                    //         StopMoving();
-                    //     }
-                    // }
-                //}
             }
             else
             {
