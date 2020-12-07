@@ -12,12 +12,25 @@ public class Obstacle : MonoBehaviour
     private NavMeshAgent agent;
     private bool hasPath;
     private float stoppingDistance = 0.1f;
+
+    [SerializeField] private AnimationCurve curve;
+    
     
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         GoToAnotherPoint();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.onCommunityChange += ChangeSize;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.onCommunityChange -= ChangeSize;
     }
 
     private void FixedUpdate()
@@ -85,24 +98,45 @@ public class Obstacle : MonoBehaviour
 
     private void GoOppositeDirection(Transform c)
     {
-      // Vector3 direction = (new Vector3(c.transform.position.x, 0, c.transform.position.z) - new Vector3(transform.position.x, 0, transform.position.z)).normalized;
-            
-        // Determine which direction to rotate towards
        Vector3 direction = c.position - transform.position;
 
        float rotationSpeed = 4.0f;
-        // The step size is equal to speed times frame time.
         float singleStep = rotationSpeed * Time.deltaTime;
 
-        // Rotate the forward vector towards the target direction by one step
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, singleStep, 0.0f);
 
         target = newDirection * -120f;
 
-        // float angle;
-        // Vector3 axis = Vector3.up;
-        // Quaternion.LookRotation(newDirection).ToAngleAxis(out angle, out axis);
-        // transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
     }
+
+    private void ChangeSize()
+    {
+        float communityCount = GameManager.instance.charactersInCommmunity.Count;
+        
+        float size = curve.Evaluate(communityCount / GameManager.instance.GetGoal());
+        transform.localScale = new Vector3(size, size, size);
+    }
+
+  //  private bool isOnLerp;
+//     IEnumerator LerpSize(int communityCount, float deltaTime = 0.01f)
+//     {
+//         
+//         isOnLerp = true;
+//         
+//         float size = curve.Evaluate(communityCount);
+//         transform.localScale = new Vector3();
+//         
+//         float t = 0;
+//        /* do
+//         {
+//             float size = curve.Evaluate(t);
+//             transform.localScale = new Vector3(size, size, size);
+//             yield return new WaitForSeconds(deltaTime);
+//             t += deltaTime; //add the time
+//
+//         } while (t < curve[curve.length-1].time); //run until the time of the last frame*/
+//
+//        isOnLerp = false;
+//     }
 
 }

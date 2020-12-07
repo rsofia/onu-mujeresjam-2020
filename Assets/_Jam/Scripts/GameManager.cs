@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 
     public UIManager ui;
     [SerializeField] private ParticleSystem selectedParticle;
+    
+    public delegate void OnCommunityChange();
+    public static event OnCommunityChange onCommunityChange;
     private void Awake()
     {
         if(instance != null)
@@ -32,7 +35,7 @@ public class GameManager : MonoBehaviour
         ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
         if (charactersInCommmunity.Count >= communitySizeGoal)
         {
-            Debug.Log("Game Won");
+           // Debug.Log("Game Won");
             isGameOver = true;
             ui.ShowGameOver(true);
         }
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
             charactersInCommmunity[communityCount-1].HoldWithLeftHand(characterToAdd.GetRightHand());
         }
         charactersInCommmunity.Add(characterToAdd);
+        onCommunityChange.Invoke();
         WinCondition();
 
     }
@@ -123,6 +127,12 @@ public class GameManager : MonoBehaviour
         }
         
         ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
+        onCommunityChange.Invoke();
+    }
+
+    public int GetGoal()
+    {
+        return communitySizeGoal;
     }
     
     

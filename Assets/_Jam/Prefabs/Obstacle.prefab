@@ -127,6 +127,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 5
   maxDistance: 4
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.012500763
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8133261
+      value: 0.50486803
+      inSlope: -0.30070645
+      outSlope: -0.30070645
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.030248
+      value: 0.0051130056
+      inSlope: -0.45652446
+      outSlope: -0.45652446
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.53584975
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!135 &202597773
 SphereCollider:
   m_ObjectHideFlags: 0
