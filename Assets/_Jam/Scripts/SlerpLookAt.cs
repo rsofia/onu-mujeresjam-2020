@@ -44,7 +44,7 @@ public class SlerpLookAt : MonoBehaviour
     {
         if (isOnSlerpVector)
         {
-            direction = (new Vector3(target.x, 0, target.z) - new Vector3(objToRotate.position.x, 0, objToRotate.position.z)).normalized;
+            //direction = (new Vector3(target.x, 0, target.z) - new Vector3(objToRotate.position.x, 0, objToRotate.position.z)).normalized;
             
             // Determine which direction to rotate towards
             direction = target - objToRotate.position;

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
 
     public UIManager ui;
-    public GameObject selectedParticle;
+    [SerializeField] private ParticleSystem selectedParticle;
     private void Awake()
     {
         if(instance != null)
@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         
         ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
-        selectedParticle.SetActive(false);
 
     }
 
@@ -41,8 +40,9 @@ public class GameManager : MonoBehaviour
 
     public void SetAndActivateParticle(Vector3 position)
     {
-        selectedParticle.transform.position = position;
-        selectedParticle.SetActive(true);
+        selectedParticle.transform.position = new Vector3(position.x, 0.1f, position.z);
+        if(selectedParticle.isStopped)
+            selectedParticle.Play();
     }
 
     public IEnumerator GoToPoint(Vector3 worldPoint)
@@ -54,7 +54,15 @@ public class GameManager : MonoBehaviour
             charactersInCommmunity[communityCount-1].WalkToPoint(worldPoint, true);
             for (int i = communityCount-2; i >= 0 ; i--)
             {
-                charactersInCommmunity[i].WalkTo(charactersInCommmunity[i+1], true);
+                try
+                {
+                    charactersInCommmunity[i].WalkTo(charactersInCommmunity[i+1], true);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("unfortunate");
+                    throw;
+                }
                 yield return  new WaitForSeconds(0.1f);
             }
         }
@@ -88,8 +96,11 @@ public class GameManager : MonoBehaviour
 
     public void RemoveCommunity(Character fromCharacter)
     {
-        if(!fromCharacter.IsOnCommunity())
-            return;
+        if (!fromCharacter.IsOnCommunity())
+        {
+            fromCharacter.Panicked();
+            return;;
+        }
         int index = -1;
         for (int i = 0; i < charactersInCommmunity.Count; i++)
         {
@@ -110,6 +121,8 @@ public class GameManager : MonoBehaviour
             }
             charactersInCommmunity.RemoveRange(0, index+1);
         }
+        
+        ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
     }
     
     

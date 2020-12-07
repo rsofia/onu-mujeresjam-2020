@@ -98,10 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panSpeed: 2
   zoomSpeed: 3
-  zoomInMax: 40
+  zoomInMax: 30
   zoomOutMax: 90
-  panlimit: {x: 35, y: 30}
-  screenPercentage: 0.05
+  panlimit: {x: 20, y: 20}
+  screenPercentage: 0.085
 --- !u!1 &4188346729355137302
 GameObject:
   m_ObjectHideFlags: 0

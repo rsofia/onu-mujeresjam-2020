@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class Character : MonoBehaviour
 {
     private bool isCommunity = false;
-    [SerializeField] private GameObject darkness;
+    [SerializeField] private ParticleSystem heartParticle;
     [SerializeField] private Transform leftHand;
     [SerializeField] private Transform rightHand;
 
@@ -54,16 +54,17 @@ public class Character : MonoBehaviour
     private void Inactive()
     {
         isCommunity = false;
-        darkness.SetActive(true);
         ikControl.DeactivateIK();
-        agent.enabled = false;
+       // agent.enabled = false;
         movingWithPanic = false;
+        if(!heartParticle.isStopped)
+            heartParticle.Stop();
     }
 
     private void JoinCommunity()
     {
         isCommunity = true;
-        darkness.SetActive(false);
+        heartParticle.Play();
         StartCoroutine(GameManager.instance.AddToCommunity(this));
     }
 
@@ -78,7 +79,7 @@ public class Character : MonoBehaviour
 
         //Move to random position
         Vector3 goal;
-        RandomPointNavmesh.RandomPoint(transform.position, 10f, out goal);
+        RandomPointNavmesh.RandomPoint(transform.position, 10f, 10f,out goal);
         canMove = true;
         targetWorld = goal;
         agent.enabled = true;
@@ -125,10 +126,6 @@ public class Character : MonoBehaviour
     #region Movement
     public void WalkTo(Character other, bool _useNavMesh)
     {
-        if(canMove)
-            return;
-        
-        
         canMove = true;
         if (_useNavMesh)
         {
