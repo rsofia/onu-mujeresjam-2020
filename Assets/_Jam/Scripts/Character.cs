@@ -160,7 +160,7 @@ public class Character : MonoBehaviour
         }
         animator.SetFloat("speed", 1.0f);
         
-       slerpLookAt.LookAt(this.transform, other.transform);
+      // slerpLookAt.LookAt(this.transform, other.transform);
     }
 
     public void WalkToPoint(Vector3 point, bool _useNavMesh)
@@ -182,7 +182,7 @@ public class Character : MonoBehaviour
             //hasPath = false;
         }
         animator.SetFloat("speed", 1.0f);
-        slerpLookAt.LookAt(transform, point);
+       // slerpLookAt.LookAt(transform, point);
         
     }
 
@@ -237,8 +237,8 @@ public class Character : MonoBehaviour
                 float step = speed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, goalPosition, step);
                 
-                if(target != null)
-                    slerpLookAt.LookAt(this.transform, target);
+                // if(target != null)
+                //     slerpLookAt.LookAt(this.transform, target);
                 
                 if (Vector3.Distance(transform.position, goalPosition) < stoppingDistance)
                 {
@@ -273,7 +273,7 @@ public class Character : MonoBehaviour
         canMove = false;
         target = null;
         animator.SetFloat("speed", 0.0f);
-        slerpLookAt.StopLookintAt();
+       // slerpLookAt.StopLookintAt();
         transform.localEulerAngles = new Vector3(0, 180f, 0);
        // agent.enabled = false;
         useNavMesh = false;
