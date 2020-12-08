@@ -40,7 +40,7 @@ public class Character : MonoBehaviour
         Inactive();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Move();
     }
@@ -49,16 +49,17 @@ public class Character : MonoBehaviour
     {
         isCommunity = false;
         ikControl.DeactivateIK();
-       // agent.enabled = false;
         movingWithPanic = false;
         moveToCharacter = false;
         canMove = false;
+        useNavMesh = false;
         if(!heartParticle.isStopped)
             heartParticle.Stop();
         foreach (var particle in confusedParticles)
         {
             particle.Stop();
         }
+        target = null;
     }
 
     private void JoinCommunity()
@@ -140,13 +141,12 @@ public class Character : MonoBehaviour
     {
         if (canMove)
         {
-            Debug.Log(gameObject.name + "Already moving to character " + target.gameObject.name);
-           // StopMoving();
+            if (AtEndOfPath())
+            {
+                StopMoving();
+            }
         }
-        else
-        {
-            Debug.Log(gameObject.name + " Should walk now!");
-        }
+        
         canMove = true;
         moveToCharacter = true;
         target = other.spotToHoldHands;
@@ -168,15 +168,17 @@ public class Character : MonoBehaviour
         moveToCharacter = false;
         if (canMove)
         {
-            Debug.Log(gameObject.name + "Already moving to point " + targetWorld);
-           // StopMoving();
+            if (AtEndOfPath())
+            {
+                StopMoving();
+            }
         }
         canMove = true;
         targetWorld = new Vector3(point.x, 0, point.z);
         if (_useNavMesh)
         {
            //agent.enabled = true;
-           //agent.SetDestination(targetWorld);
+            agent.SetDestination(targetWorld);
             useNavMesh = true;
             agent.isStopped = false;
             //hasPath = false;
@@ -185,12 +187,12 @@ public class Character : MonoBehaviour
        // slerpLookAt.LookAt(transform, point);
         
     }
+    
 
     private void Move()
     {
         if (canMove)
         {
-            Debug.Log("Can Move " + gameObject.name);
             Vector3 goalPosition;
             if (moveToCharacter)
             {
@@ -202,7 +204,7 @@ public class Character : MonoBehaviour
             
             if (useNavMesh)
             {
-                Debug.Log("Use Mesh " + gameObject.name);
+                if(movingWithPanic == false)
                 // if (goalPosition != agent.destination)
                 // {
                     agent.SetDestination(goalPosition);
@@ -211,9 +213,7 @@ public class Character : MonoBehaviour
                 
                 if (AtEndOfPath())
                 {
-                    agent.isStopped = true;
                     StopMoving();
-                    Debug.Log("At end of path " + gameObject.name);
                     if (movingWithPanic)
                     {
                         UnPanic();
@@ -223,8 +223,6 @@ public class Character : MonoBehaviour
                 
                 if (Vector3.Distance(transform.position, agent.destination) < stoppingDistance)
                 {
-                    Debug.Log("distance " + gameObject.name);
-                    agent.isStopped = true;
                     StopMoving();
                     if (movingWithPanic)
                     {
@@ -251,6 +249,21 @@ public class Character : MonoBehaviour
             }
            
         }
+        else
+        {
+            //patch - test
+            if (target != null)
+            {
+                if (Vector3.Distance(transform.position, target.position) > stoppingDistance*4)
+                {
+                    canMove = true;
+                    animator.SetFloat("speed", 1.0f);
+                    moveToCharacter = true;
+                    canMove = true;
+                    agent.isStopped = false;
+                }
+            }
+        }
     }
     
     public float pathEndThreshold = 0.1f;
@@ -271,12 +284,11 @@ public class Character : MonoBehaviour
     public void StopMoving()
     {
         canMove = false;
-        target = null;
         animator.SetFloat("speed", 0.0f);
        // slerpLookAt.StopLookintAt();
         transform.localEulerAngles = new Vector3(0, 180f, 0);
        // agent.enabled = false;
-        useNavMesh = false;
+        agent.isStopped = true;
         animator.transform.localEulerAngles = Vector3.zero;
     }
     
