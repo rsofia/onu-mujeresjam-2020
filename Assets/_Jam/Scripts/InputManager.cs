@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour
         
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         
-        if (Physics.Raycast(ray, out hit, 1000))
+        if (Physics.Raycast(ray, out hit, 1500))
         {
             if (hit.collider.CompareTag(GameConstants.characterTag))
             {
