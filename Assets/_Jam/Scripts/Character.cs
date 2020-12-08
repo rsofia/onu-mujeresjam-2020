@@ -89,13 +89,12 @@ public class Character : MonoBehaviour
         RandomPointNavmesh.RandomPoint(transform.position, 5, agent.height*2,out goal);
         canMove = true;
         targetWorld = new Vector3(goal.x, 0, goal.z)*2;
-        agent.enabled = true;
+        agent.isStopped = false;
         useNavMesh = true;
         movingWithPanic = true;
         moveToCharacter = false;
         hasPath = false;
         agent.SetDestination(targetWorld);
-        // slerpLookAt.LookAt(transform, goal);
     }
 
     //reset variables from panic
@@ -289,6 +288,7 @@ public class Character : MonoBehaviour
        // agent.enabled = false;
         agent.isStopped = true;
         animator.transform.localEulerAngles = Vector3.zero;
+        animator.transform.localPosition = Vector3.zero;
     }
     
 
