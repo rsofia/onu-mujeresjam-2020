@@ -86,13 +86,15 @@ public class Character : MonoBehaviour
 
         //Move to random position
         Vector3 goal;
-        RandomPointNavmesh.RandomPoint(transform.position, 10f, 10f,out goal);
+        RandomPointNavmesh.RandomPoint(transform.position, 5, agent.height*2,out goal);
         canMove = true;
-        targetWorld = goal;
+        targetWorld = new Vector3(goal.x, 0, goal.z)*2;
         agent.enabled = true;
         useNavMesh = true;
         movingWithPanic = true;
         moveToCharacter = false;
+        hasPath = false;
+        agent.SetDestination(targetWorld);
         // slerpLookAt.LookAt(transform, goal);
     }
 
@@ -152,7 +154,6 @@ public class Character : MonoBehaviour
         target = other.spotToHoldHands;
         if (_useNavMesh)
         {
-           // agent.enabled = true;
            agent.SetDestination(target.position);
            useNavMesh = true;
            agent.isStopped = false;
@@ -177,7 +178,6 @@ public class Character : MonoBehaviour
         targetWorld = new Vector3(point.x, 0, point.z);
         if (_useNavMesh)
         {
-           //agent.enabled = true;
             agent.SetDestination(targetWorld);
             useNavMesh = true;
             agent.isStopped = false;
@@ -193,6 +193,8 @@ public class Character : MonoBehaviour
     {
         if (canMove)
         {
+            if (movingWithPanic)
+                movingWithPanic = true;
             Vector3 goalPosition;
             if (moveToCharacter)
             {
@@ -204,12 +206,11 @@ public class Character : MonoBehaviour
             
             if (useNavMesh)
             {
-                if(movingWithPanic == false)
-                // if (goalPosition != agent.destination)
-                // {
+                if (movingWithPanic == false)
+                {
                     agent.SetDestination(goalPosition);
                     hasPath = false;
-                //}
+                }
                 
                 if (AtEndOfPath())
                 {
@@ -235,8 +236,6 @@ public class Character : MonoBehaviour
                 float step = speed * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, goalPosition, step);
                 
-                // if(target != null)
-                //     slerpLookAt.LookAt(this.transform, target);
                 
                 if (Vector3.Distance(transform.position, goalPosition) < stoppingDistance)
                 {
