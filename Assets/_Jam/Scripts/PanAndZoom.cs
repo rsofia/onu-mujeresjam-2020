@@ -30,7 +30,10 @@ public class PanAndZoom : MonoBehaviour
     }
 
     private void Update()
-    {
+	{
+		if(GameManager.instance.isGameOver)
+			return;
+			
         float x = inputProvider.GetAxisValue(0);
         float y = inputProvider.GetAxisValue(1);
         float z = inputProvider.GetAxisValue(2);

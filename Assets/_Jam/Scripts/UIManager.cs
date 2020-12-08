@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI txtGoal;
     [SerializeField] private GameObject gameOverPanel;
-
+	[SerializeField] private GameObject gameCanvas;
+	
     private void Start()
     {
        ShowGameOver(false);
@@ -31,4 +32,9 @@ public class UIManager : MonoBehaviour
             gameOverPanel.SetActive(false);
         }
     }
+    
+	public void ShowGameCanvas(bool _show)
+	{
+		gameCanvas.SetActive(_show);
+	}
 }

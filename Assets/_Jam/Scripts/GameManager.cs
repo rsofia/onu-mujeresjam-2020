@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public List<Character> charactersInCommmunity = new List<Character>();
 
     [HideInInspector]
-    public bool isGameOver = false;
+	public bool isGameOver;
 
     public UIManager ui;
     [SerializeField] private ParticleSystem selectedParticle;
@@ -24,8 +24,9 @@ public class GameManager : MonoBehaviour
     {
         if(instance != null)
             Destroy(this);
-        instance = this;
+	    instance = this;
         
+	    isGameOver = true;
         ui.SetGoalText(charactersInCommmunity.Count, communitySizeGoal);
 
     }

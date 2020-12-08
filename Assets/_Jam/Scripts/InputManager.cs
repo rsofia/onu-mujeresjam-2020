@@ -11,22 +11,23 @@ public class InputManager : MonoBehaviour
     public InputAction inputAction;
 
     private void Update()
-    {
-      if(Mouse.current.leftButton.wasPressedThisFrame)
+	{			
+    	if(Mouse.current.leftButton.wasPressedThisFrame)
             OnLeftClick();
     }
 
     public void OnLeftClick()
-    {
-        if(GameManager.instance.isGameOver)
-            return;
-        
+	{   
+		if(GameManager.instance.isGameOver)
+			return;
+			
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         
         if (Physics.Raycast(ray, out hit, 1500))
         {
             if (hit.collider.CompareTag(GameConstants.characterTag))
             {
+            	print("Here " + GameManager.instance.isGameOver);
                 hit.collider.GetComponent<Character>().Select();
                 GameManager.instance.SetAndActivateParticle(hit.collider.transform.position);
             }

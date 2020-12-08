@@ -80,7 +80,9 @@ public class TextMeshTyper : MonoBehaviour
 		else
 		{
 			print("Fin Statistics");
+			FindObjectOfType<UIManager>().ShowGameCanvas(true);
 			FindObjectOfType<PostProcessController>().TurnOffDepth(false);
+			GameManager.instance.isGameOver = false;
 		}
 		gameObject.SetActive(false);
 	}
