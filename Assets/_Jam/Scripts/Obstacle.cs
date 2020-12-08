@@ -45,10 +45,8 @@ public class Obstacle : MonoBehaviour
         if(GameManager.instance.isGameOver)
             return;
         
-        Debug.Log("collided with " + other.gameObject.name);
         if (other.collider.tag == GameConstants.characterTag)
         {
-            Debug.Log("Collided with a character");
             GameManager.instance.RemoveCommunity(other.collider.GetComponent<Character>());
             GoOppositeDirection(other.collider.transform);
         }
@@ -117,26 +115,5 @@ public class Obstacle : MonoBehaviour
         transform.localScale = new Vector3(size, size, size);
     }
 
-  //  private bool isOnLerp;
-//     IEnumerator LerpSize(int communityCount, float deltaTime = 0.01f)
-//     {
-//         
-//         isOnLerp = true;
-//         
-//         float size = curve.Evaluate(communityCount);
-//         transform.localScale = new Vector3();
-//         
-//         float t = 0;
-//        /* do
-//         {
-//             float size = curve.Evaluate(t);
-//             transform.localScale = new Vector3(size, size, size);
-//             yield return new WaitForSeconds(deltaTime);
-//             t += deltaTime; //add the time
-//
-//         } while (t < curve[curve.length-1].time); //run until the time of the last frame*/
-//
-//        isOnLerp = false;
-//     }
 
 }

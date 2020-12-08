@@ -27,6 +27,7 @@ public class Character : MonoBehaviour
     private NavMeshAgent agent;
     private bool useNavMesh;
     private bool movingWithPanic;
+    private bool moveToCharacter;
     
     private void Awake()
     {
@@ -41,14 +42,6 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        // if (GameManager.instance.isGameOver)
-        // {
-        //     if(canMove)
-        //         StopMoving();
-        //     
-        //     return;
-        // }
-        
         Move();
     }
 
@@ -58,6 +51,8 @@ public class Character : MonoBehaviour
         ikControl.DeactivateIK();
        // agent.enabled = false;
         movingWithPanic = false;
+        moveToCharacter = false;
+        canMove = false;
         if(!heartParticle.isStopped)
             heartParticle.Stop();
         foreach (var particle in confusedParticles)
@@ -96,7 +91,8 @@ public class Character : MonoBehaviour
         agent.enabled = true;
         useNavMesh = true;
         movingWithPanic = true;
-        slerpLookAt.LookAt(transform, goal);
+        moveToCharacter = false;
+        // slerpLookAt.LookAt(transform, goal);
     }
 
     //reset variables from panic
@@ -109,6 +105,7 @@ public class Character : MonoBehaviour
         {
             particle.Stop();
         }
+        Inactive();
     }
 
     public bool IsOnCommunity()
@@ -141,13 +138,26 @@ public class Character : MonoBehaviour
     #region Movement
     public void WalkTo(Character other, bool _useNavMesh)
     {
+        if (canMove)
+        {
+            Debug.Log(gameObject.name + "Already moving to character " + target.gameObject.name);
+           // StopMoving();
+        }
+        else
+        {
+            Debug.Log(gameObject.name + " Should walk now!");
+        }
         canMove = true;
+        moveToCharacter = true;
+        target = other.spotToHoldHands;
         if (_useNavMesh)
         {
-            agent.enabled = true;
-            this.useNavMesh = _useNavMesh;
+           // agent.enabled = true;
+           agent.SetDestination(target.position);
+           useNavMesh = true;
+           agent.isStopped = false;
+           hasPath = false;
         }
-        target = other.spotToHoldHands;
         animator.SetFloat("speed", 1.0f);
         
        slerpLookAt.LookAt(this.transform, other.transform);
@@ -155,15 +165,21 @@ public class Character : MonoBehaviour
 
     public void WalkToPoint(Vector3 point, bool _useNavMesh)
     {
-        if(canMove)
-            return;
-        
+        moveToCharacter = false;
+        if (canMove)
+        {
+            Debug.Log(gameObject.name + "Already moving to point " + targetWorld);
+           // StopMoving();
+        }
         canMove = true;
-        targetWorld = point;
+        targetWorld = new Vector3(point.x, 0, point.z);
         if (_useNavMesh)
         {
-            agent.enabled = true;
-            useNavMesh = _useNavMesh;
+           //agent.enabled = true;
+           //agent.SetDestination(targetWorld);
+            useNavMesh = true;
+            agent.isStopped = false;
+            //hasPath = false;
         }
         animator.SetFloat("speed", 1.0f);
         slerpLookAt.LookAt(transform, point);
@@ -174,24 +190,30 @@ public class Character : MonoBehaviour
     {
         if (canMove)
         {
+            Debug.Log("Can Move " + gameObject.name);
             Vector3 goalPosition;
-            if (target == null)
-                goalPosition = targetWorld;
-            else
+            if (moveToCharacter)
+            {
                 goalPosition = target.position;
+            }
+            else
+                goalPosition = targetWorld;
+                
             
             if (useNavMesh)
             {
-                if (goalPosition != agent.destination)
-                {
+                Debug.Log("Use Mesh " + gameObject.name);
+                // if (goalPosition != agent.destination)
+                // {
                     agent.SetDestination(goalPosition);
                     hasPath = false;
-                }
+                //}
                 
                 if (AtEndOfPath())
                 {
                     agent.isStopped = true;
                     StopMoving();
+                    Debug.Log("At end of path " + gameObject.name);
                     if (movingWithPanic)
                     {
                         UnPanic();
@@ -201,6 +223,7 @@ public class Character : MonoBehaviour
                 
                 if (Vector3.Distance(transform.position, agent.destination) < stoppingDistance)
                 {
+                    Debug.Log("distance " + gameObject.name);
                     agent.isStopped = true;
                     StopMoving();
                     if (movingWithPanic)
@@ -252,7 +275,7 @@ public class Character : MonoBehaviour
         animator.SetFloat("speed", 0.0f);
         slerpLookAt.StopLookintAt();
         transform.localEulerAngles = new Vector3(0, 180f, 0);
-        agent.enabled = false;
+       // agent.enabled = false;
         useNavMesh = false;
         animator.transform.localEulerAngles = Vector3.zero;
     }
@@ -265,7 +288,6 @@ public class Character : MonoBehaviour
     {
         if(isCommunity)
             return;
-        //GetComponent<BoxCollider>().enabled = false;
         JoinCommunity();
     }
 }

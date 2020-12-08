@@ -10,7 +10,12 @@ public class PanAndZoom : MonoBehaviour
     [SerializeField] private float zoomSpeed = 3f;
     [SerializeField] private float zoomInMax = 40f;
     [SerializeField] private float zoomOutMax = 90f;
-    [SerializeField] Vector2 panlimit;
+    //[SerializeField] Vector2 panlimit;
+
+    [SerializeField]
+    Vector2 panLimitX;
+
+    [SerializeField] private Vector2 panLimitY;
     [SerializeField] [Range(0, 1)] private float screenPercentage = 0.05f;
     
     private CinemachineInputProvider inputProvider;
@@ -74,8 +79,8 @@ public class PanAndZoom : MonoBehaviour
                                             cameraTransform.position.y, 
                                    cameraTransform.position.z + direction.y *panSpeed);
 
-       target.x = Mathf.Clamp(target.x, -panlimit.x, panlimit.x);
-       target.z = Mathf.Clamp(target.z, -panlimit.y, panlimit.y);
+       target.x = Mathf.Clamp(target.x, -panLimitX.x, panLimitX.y);
+       target.z = Mathf.Clamp(target.z, -panLimitY.x, panLimitY.y);
        
         cameraTransform.position = Vector3.Lerp(cameraTransform.position,
             target, Time.deltaTime);
