@@ -38,10 +38,17 @@ public class GameManager : MonoBehaviour
         {
            // Debug.Log("Game Won");
             isGameOver = true;
-            ui.ShowGameOver(true);
+	        ui.ShowGameOver(true);
+	        StartCoroutine(RestartGame());
         }
     }
-
+	
+	IEnumerator RestartGame()
+	{
+		yield return new WaitForSeconds(5f);
+		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+	}
+	
     public void SetAndActivateParticle(Vector3 position)
     {
         selectedParticle.transform.position = new Vector3(position.x, 0.1f, position.z);

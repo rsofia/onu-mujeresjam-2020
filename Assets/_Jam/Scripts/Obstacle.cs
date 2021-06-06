@@ -47,6 +47,12 @@ public class Obstacle : MonoBehaviour
         
         if (other.collider.tag == GameConstants.characterTag)
         {
+        	if(!FindObjectOfType<AudioManager>().fxPlayer.isPlaying)
+        	{
+        		FindObjectOfType<AudioManager>().fxPlayer.clip = FindObjectOfType<AudioManager>().soundFX[1];
+        		FindObjectOfType<AudioManager>().fxPlayer.Play();
+        	}
+        		
             GameManager.instance.RemoveCommunity(other.collider.GetComponent<Character>());
             GoOppositeDirection(other.collider.transform);
         }
